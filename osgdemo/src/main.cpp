@@ -3,10 +3,13 @@
 #include <osgGA/StateSetManipulator>
 #include <osgUtil/Optimizer>
 
-// 读取点云文件，临时用的
+// 读取点云文件
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <unistd.h>
+
+using namespace std;
 
 int main() {
 
