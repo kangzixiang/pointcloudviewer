@@ -27,7 +27,7 @@ set(LIBS ${GLFW3_LIBRARY} X11 Xrandr Xinerama Xi Xxf86vm Xcursor GL dl pthread f
 set (CMAKE_CXX_LINK_EXECUTABLE "${CMAKE_CXX_LINK_EXECUTABLE} -ldl")
 
 # add_library(GLAD "glad.c")
-
+include_directories (${CMAKE_CURRENT_SOURCE_DIR}/include)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src OPENGL_STUDY_SOURCE)
 add_executable (openglstudy ${OPENGL_STUDY_SOURCE})
 target_link_libraries (openglstudy ${LIBS} glfw)
