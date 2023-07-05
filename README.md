@@ -6,7 +6,7 @@ cd pointcloudviewer
 ## Find help
 ./build.sh -h
 
-`
+```
 Usage
     build.sh [options]
 
@@ -16,4 +16,4 @@ Options
 
 Example
     ./build.sh --clean
-`
+```
