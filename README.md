@@ -1,11 +1,13 @@
 # pointcloudviewer
 ## How to build 
+```
 cd pointcloudviewer
 ./build.sh
-
+```
 ## Find help
+```
 ./build.sh -h
-
+```
 ```
 Usage
     build.sh [options]
