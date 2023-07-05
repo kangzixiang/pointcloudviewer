@@ -6,7 +6,8 @@ cd pointcloudviewer
 ## Find help
 ./build.sh -h
 
-'Usage
+`
+Usage
     build.sh [options]
 
 Options
@@ -14,4 +15,5 @@ Options
     --clean-all       = Clean all tmp files before building.
 
 Example
-    ./build.sh --clean'
+    ./build.sh --clean
+`
