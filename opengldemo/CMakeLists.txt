@@ -7,6 +7,6 @@ find_package(PCAP)
 message( "find pcap library: " ${PCAP_LIBRARY})
 link_libraries(${PCAP_LIBRARY})
 
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} OPENGL_DEMO_SOURCE)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src OPENGL_DEMO_SOURCE)
 add_executable (opengldemo ${OPENGL_DEMO_SOURCE})
 target_link_libraries (opengldemo GL GLU glut)
