@@ -85,20 +85,8 @@ void displayPointCloud(void) {
     {
         float x = 0.0, y = 0.0, z = 0.0, in =0.0;
         x = std::get<0>(vecPointData[i]);
-        // if (abs(x) > fMaxValue)
-        // {
-        //     fMaxValue = abs(x) ;
-        // }
         y = std::get<1>(vecPointData[i]);
-        // if (abs(y) > fMaxValue)
-        // {
-        //     fMaxValue = abs(y);
-        // }
         z = std::get<2>(vecPointData[i]);
-        // if (abs(z) > fMaxValue)
-        // {
-        //     fMaxValue = abs(z);
-        // }
         in = std::get<3>(vecPointData[i]);
         glColor3f(1.0f, 0.0f, 0.0f);
         glVertex3f(x/fMaxValue, y/fMaxValue, z/fMaxValue);
