@@ -13,7 +13,8 @@ using namespace std;
 static GLfloat xRot=0.0f;
 static GLfloat yRot=0.0f;
 static vector<tuple<float, float, float, float>> vecPointData;
-static float fMaxValue = 5.0f;
+static float fMaxValue = 1.0f;
+static float fScale = 1.0 / 100.0f;
 
 void Display(void)
 {
@@ -21,6 +22,8 @@ void Display(void)
     glPushMatrix();
     glRotatef(xRot,1.0,0.0,0.0);
     glRotatef(yRot,0.0,1.0,0.0);
+
+    glScalef(fScale, fScale, fScale);
 
     glBegin(GL_POINTS);
     glColor3f(1.0,1.0,1.0);//白色
@@ -51,14 +54,15 @@ void Display(void)
     glVertex3f(2.0f,2.0f, 0.0f);
     glEnd();
 
+    //Draw Coordinate
     glBegin(GL_LINES);//glBegin和glEnd保证指定的这些点有效
-    glColor3f(1.0,0.0,0.0);//红色
+    glColor3f(1.0,0.0,0.0);//红色 X-Axis
     glVertex3f(0.0,0.0,0.0);
     glVertex3f(100.0,0.0,0.0);
-    glColor3f(0.0,1.0,0.0);//绿色
+    glColor3f(0.0,1.0,0.0);//绿色 Y-Axis
     glVertex3f(0.0,0.0,0.0);
     glVertex3f(0.0,100.0,0.0);
-    glColor3f(0.0,0.0,1.0);//蓝色
+    glColor3f(0.0,0.0,1.0);//蓝色 Z-Axis
     glVertex3f(0.0,0.0,0.0);
     glVertex3f(0.0,0.0,100.0);
     glEnd();
@@ -73,6 +77,7 @@ void displayPointCloud(void) {
     glPushMatrix();
     glRotatef(xRot,1.0,0.0,0.0);
     glRotatef(yRot,0.0,1.0,0.0);
+    glScalef(fScale, fScale, fScale);
     glBegin(GL_POINTS);
     for (int i = 0; i < vecPointData.size() & i != 10; i++)
     {
@@ -180,12 +185,12 @@ void reshape (int w, int h)
     //(near)和视径(far)参数
     //near = 1, far = 100, Z 轴负向顺着视线方向指向屏幕内
     //X 轴正向向右，Y 轴正向向上，坐标原点在屏幕中心处
-    gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 1.0, 100.0);
+    // gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 1.0, 100.0);
     //设置摄像机的位置及姿态参数:
     //摄像机位置(cX, cY, cZ)
     //视点所观察中心位置Ow(oX, oY, oZ)
     //摄像机位姿参数——摄像机顶部矢量
-    gluLookAt(0, 0, 5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    // gluLookAt(0, 0, 5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     //设置矩阵模式为模型-视图变换模式，以便于后面的自定义显示函数继续本模式
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
