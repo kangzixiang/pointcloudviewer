@@ -5,6 +5,8 @@
 #include <GL/glut.h>
 #include <GL/glext.h>
 #include <GL/freeglut.h>
+#include <GL/freeglut_ext.h>
+
 
 #include "LidarGrabber.hpp"
 
@@ -138,6 +140,45 @@ void SpecialKeys(int key,int x,int y)
     glutPostRedisplay();
 }
 
+void mouseCB(int button, int state, int x, int y) {
+    static float fScaleValue = fScale;
+    switch (button)
+    {
+        case GLUT_LEFT_BUTTON:
+        {
+            fScaleValue *= 1;
+            break;
+        }
+        case GLUT_MIDDLE_BUTTON:
+        {
+            fScaleValue *= 1;
+            // glScalef(fScale * 2, fScale * 2, fScale * 2);
+            break;
+        }
+        case GLUT_RIGHT_BUTTON:
+        {
+            fScaleValue *= 1;
+            break;
+        }
+        case 3:
+        {
+            fScaleValue *= 2;
+            break;
+        }
+        case 4:
+        {
+            fScaleValue *= 0.5;
+            break;
+        }
+        default :
+        {
+            break;
+        }
+    }
+    glScalef(fScaleValue, fScaleValue, fScaleValue);
+    glutPostRedisplay();
+}
+
 void idle(void)
 {
     glutPostRedisplay();
@@ -196,6 +237,8 @@ void reshape (int w, int h)
     glLoadIdentity();
 }
 
+void mouseWheel(int button, int dir, int x, int y);
+
 int main(int argc, char **argv)
 {
     glutInit(&argc, argv);
@@ -216,6 +259,8 @@ int main(int argc, char **argv)
     glutDisplayFunc(Display);
     glutSpecialFunc(SpecialKeys);
     glutIdleFunc(idle);
+    glutMouseFunc(mouseCB);
+    glutMouseWheelFunc(mouseWheel);
     //窗口调整大小事件的处理函数
     glutReshapeFunc(reshape);
     // 设置窗口关闭后继续执行程序，而不是exit直接退出了程序
@@ -224,4 +269,9 @@ int main(int argc, char **argv)
     // std::thread *ThreadHandle = new std::thread(lidarGrabberTest, "/tmp/sensor/lidar/test.pcap");
     glutMainLoop();
     return 0;
+}
+
+void mouseWheel(int button, int dir, int x, int y) {
+    
+    return;
 }
