@@ -16,6 +16,6 @@ int main(void)
     BinaryBytes2String3(test, 3, result);
     cout<<result<<endl;
 
-    // readPointCloud("../resources/model.pcd");
+    readPointCloud("../resources/model.pcd");
     return 0;
 }

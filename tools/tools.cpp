@@ -1,6 +1,7 @@
 #include "tools.hpp"
 #include <fstream>
 #include <sstream>
+#include <cstring>
 
 int BinaryBytes2String1(const unsigned char* pSrc, unsigned int nSrcLength, char* pDst)
 {
@@ -130,22 +131,26 @@ vector<vector<double>> readPointCloud(string filePath)
         else if (line.find("DATA") != string::npos)
         {
             DATA = line;
-            continue;
+            break;
         }
-        std::stringstream ss(line);
-        std::string str;
+        break;
+    }
+    char c[4];
+    float t = 0.0;
+    while (ifs.read(c, 4))
+    {
         vector<double> v;
-        while (getline(ss, str, ' '))
+        memcpy(&t, c, 4);
+        v.push_back(t);
+        if (ifs.read(c, 4))
         {
-            try {
-                double temp = std::stod(str);
-                v.push_back(temp);
-            }
-            catch (...)
-            {
-                cout << str << endl;
-            }
-            
+            memcpy(&t, c, 4);
+            v.push_back(t);
+        }
+        if (ifs.read(c, 4))
+        {
+            memcpy(&t, c, 4);
+            v.push_back(t);
         }
         retVec.push_back(v);
     }

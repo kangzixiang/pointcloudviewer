@@ -12,6 +12,8 @@
 #include <vector>
 #include <unistd.h>
 
+#include "../../tools/tools.hpp"
+
 using namespace std;
 
 static GLfloat xRot=0.0f;
@@ -27,18 +29,13 @@ void displayPointCloud(void) {
     glRotatef(yRot,0.0,1.0,0.0);
     glScalef(fScale, fScale, fScale);
     glBegin(GL_POINTS);
-    std::ifstream ifs("../p213.pcd");
-    std::string line;
-    while (getline(ifs, line)) {
-        std::stringstream ss(line);
-        std::vector<double> v;
-        std::string str;
-        while (getline(ss, str, ' '))
-            v.push_back(std::stod(str));
+    vector<vector<double>> vec = readPointCloud("../../resources/model.pcd");
+    for (int i = 0; i < vec.size(); i++)
+    {
+        std::vector<double> v = vec[i];
         glColor3f(1.0f, 0.0f, 0.0f);
         glVertex3f(v[0], v[1], v[2]);
     }
-    ifs.close();
     glEnd();
     glFlush();//保证前面的命令立即执行
     glPopMatrix();
