@@ -9,6 +9,7 @@ function (add_subdirectory_if_exist arg)
 endfunction ()
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 set(OPENGLDEMO_SRC ${CMAKE_CURRENT_SOURCE_DIR}/opengldemo/src)
 set(OPENGLSTUDY_SRC ${CMAKE_CURRENT_SOURCE_DIR}/openglstudy/src)
