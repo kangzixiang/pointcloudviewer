@@ -18,6 +18,7 @@ if (NOT VTK_FOUND)
   message(FATAL_ERROR "CylinderExample: Unable to find the VTK build folder.")
 endif()
 
+set(VTK_DEMO_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 # Prevent a "command line is too long" failure in Windows.
 set(CMAKE_NINJA_FORCE_RESPONSE_FILE "ON" CACHE BOOL "Force Ninja to use response files.")
 message("---VTK_DEMO_DIR:" ${VTK_DEMO_DIR})
