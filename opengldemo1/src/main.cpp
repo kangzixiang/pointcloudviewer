@@ -29,7 +29,10 @@ void displayPointCloud(void) {
     glRotatef(yRot,0.0,1.0,0.0);
     glScalef(fScale, fScale, fScale);
     glBegin(GL_POINTS);
-    vector<vector<double>> vec = readPointCloud("../../resources/model.pcd");
+    std::ifstream ifs("filePath.txt");
+    std::string filePath;
+    getline(ifs, filePath);
+    vector<vector<double>> vec = readPointCloud(filePath);
     for (int i = 0; i < vec.size(); i++)
     {
         std::vector<double> v = vec[i];
@@ -62,6 +65,12 @@ void SpecialKeys(int key,int x,int y)
         case GLUT_KEY_RIGHT:
             yRot+=span;
             break;
+        case GLUT_KEY_PAGE_UP:
+            fScale *= 1.1;
+            break;
+        case GLUT_KEY_PAGE_DOWN:
+            fScale /= 1.1;
+            break;
         default:
             break;
     }
@@ -90,12 +99,12 @@ void reshape (int w, int h)
     //(near)和视径(far)参数
     //near = 1, far = 100, Z 轴负向顺着视线方向指向屏幕内
     //X 轴正向向右，Y 轴正向向上，坐标原点在屏幕中心处
-    // gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 1.0, 100.0);
+    gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 1.0, 100.0);
     //设置摄像机的位置及姿态参数:
     //摄像机位置(cX, cY, cZ)
     //视点所观察中心位置Ow(oX, oY, oZ)
     //摄像机位姿参数——摄像机顶部矢量
-    // gluLookAt(0, 0, 5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    gluLookAt(0, 0, 5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     //设置矩阵模式为模型-视图变换模式，以便于后面的自定义显示函数继续本模式
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();

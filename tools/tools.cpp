@@ -67,7 +67,9 @@ vector<vector<double>> readPointCloud(string filePath)
     string comment = "";
     string VERSION = "0.7";
     string FIELDS = "";
+    vector<string> vecFields;
     string SIZE = "";
+    vector<int> vecSieze;
     string TYPE = "";
     string COUNT = "";
     string WIDTH = "";
@@ -91,11 +93,26 @@ vector<vector<double>> readPointCloud(string filePath)
         else if (line.find("FIELDS") != string::npos)
         {
             FIELDS = line;
+            std::stringstream ss(line);
+            std::string str;
+            while (getline(ss, str, ' '))
+            {
+                if (str == "FIELDS") continue;
+                vecFields.push_back(str);
+            }
             continue;
         }
         else if (line.find("SIZE") != string::npos)
         {
             SIZE = line;
+            std::stringstream ss(line);
+            std::string str;
+            while (getline(ss, str, ' '))
+            {
+                int nSize = atoi(str.c_str());
+                if (0 == nSize) continue;
+                vecSieze.push_back(nSize);
+            }
             continue;
         }
         else if (line.find("TYPE") != string::npos)
@@ -137,23 +154,71 @@ vector<vector<double>> readPointCloud(string filePath)
     }
     char c[4];
     float t = 0.0;
-    while (ifs.read(c, 4))
+    for (int i = 0; ; i++)
     {
-        vector<double> v;
-        memcpy(&t, c, 4);
-        v.push_back(t);
-        if (ifs.read(c, 4))
+        int nIndex = i % vecFields.size();
+        if (ifs.read(c, vecSieze[nIndex]))
         {
-            memcpy(&t, c, 4);
-            v.push_back(t);
+            if (vecFields[nIndex] == "x")
+            {
+                vector<double> v;
+                memcpy(&t, c, vecSieze[nIndex]);
+                v.push_back(t);
+
+                i++;
+                nIndex = i % vecFields.size();
+                if (ifs.read(c, vecSieze[nIndex]))
+                {
+                    if (vecFields[nIndex] == "y")
+                    {
+                        memcpy(&t, c, vecSieze[nIndex]);
+                        v.push_back(t);
+
+                        i++;
+                        nIndex = i % vecFields.size();
+                        if (ifs.read(c, vecSieze[nIndex]))
+                        {
+                            if (vecFields[nIndex] == "z")
+                            {
+                                memcpy(&t, c, vecSieze[nIndex]);
+                                v.push_back(t);
+                                retVec.push_back(v);
+                            }
+                        }
+                        else 
+                        {
+                            break;
+                        }
+                    }
+                }
+                else 
+                {
+                    break;
+                }
+            }
         }
-        if (ifs.read(c, 4))
+        else
         {
-            memcpy(&t, c, 4);
-            v.push_back(t);
+            break;
         }
-        retVec.push_back(v);
     }
+    // while (ifs.read(c, 4))
+    // {
+    //     vector<double> v;
+    //     memcpy(&t, c, 4);
+    //     v.push_back(t);
+    //     if (ifs.read(c, 4))
+    //     {
+    //         memcpy(&t, c, 4);
+    //         v.push_back(t);
+    //     }
+    //     if (ifs.read(c, 4))
+    //     {
+    //         memcpy(&t, c, 4);
+    //         v.push_back(t);
+    //     }
+    //     retVec.push_back(v);
+    // }
     ifs.close();
     return retVec;
 }

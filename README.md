@@ -1,7 +1,7 @@
 # pointcloudviewer
 
 ## introduction
-This repo is use 3D graphics technique like opengl osg vtk for 3D point cloud viewer
+This repo is use 3D graphics technique like opengl, osg, vtk for 3D point cloud viewer
 
 project contain some demo and study notes
 
