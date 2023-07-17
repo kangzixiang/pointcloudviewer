@@ -20,11 +20,33 @@
       <x>330</x>
       <y>10</y>
       <width>91</width>
-      <height>41</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
      <string>Hello World</string>
+    </property>
+   </widget>
+   <widget class="QOpenGLWidget" name="openGLWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>781</width>
+      <height>511</height>
+     </rect>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
+    <property name="tabletTracking">
+     <bool>true</bool>
+    </property>
+    <property name="acceptDrops">
+     <bool>true</bool>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>
@@ -37,9 +59,49 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuBtn">
+    <property name="title">
+     <string>Start</string>
+    </property>
+    <addaction name="actiont1"/>
+    <addaction name="actiont2"/>
+   </widget>
+   <addaction name="menuBtn"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionTest">
+   <property name="text">
+    <string>Test</string>
+   </property>
+  </action>
+  <action name="actiont1">
+   <property name="text">
+    <string>pointCloud</string>
+   </property>
+  </action>
+  <action name="actiont2">
+   <property name="text">
+    <string>t2</string>
+   </property>
+  </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actiont1</sender>
+   <signal>triggered()</signal>
+   <receiver>openGLWidget</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>85</x>
+     <y>70</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>317</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

@@ -11,12 +11,13 @@ class MainWindow;
 }
 
 class MainWindow : public QMainWindow {
-    // Q_OBJECT
+    Q_OBJECT
 public:
     explicit MainWindow(QWidget* parent = nullptr);
-    ~MainWindow();
+    virtual ~MainWindow();
 
-private slots:  // NOLINT
+public slots:  // NOLINT
+    void ActionOpenPointCloud(void);
 
 
 private:
