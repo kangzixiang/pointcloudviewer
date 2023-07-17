@@ -110,6 +110,21 @@ void reshape (int w, int h)
     glLoadIdentity();
 }
 
+void mouseWheel(int button, int dir, int x, int y) {
+    if (dir > 0)
+    {
+        // Zoom in
+        fScale *= 1.1;
+    }
+    else
+    {
+        // Zoom out
+        fScale /= 1.1;
+    }
+    glutPostRedisplay();
+    return;
+}
+
 int main(int argc, char **argv)
 {
     glutInit(&argc, argv);
@@ -129,6 +144,7 @@ int main(int argc, char **argv)
 
     glutDisplayFunc(displayPointCloud);
     glutSpecialFunc(SpecialKeys);
+    glutMouseWheelFunc(mouseWheel);
     glutIdleFunc(idle);
     //窗口调整大小事件的处理函数
     glutReshapeFunc(reshape);
