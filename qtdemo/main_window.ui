@@ -63,8 +63,8 @@
     <property name="title">
      <string>Start</string>
     </property>
-    <addaction name="actiont1"/>
-    <addaction name="actiont2"/>
+    <addaction name="pointCloudBtn"/>
+    <addaction name="testBtn"/>
    </widget>
    <addaction name="menuBtn"/>
   </widget>
@@ -74,14 +74,14 @@
     <string>Test</string>
    </property>
   </action>
-  <action name="actiont1">
+  <action name="pointCloudBtn">
    <property name="text">
     <string>pointCloud</string>
    </property>
   </action>
-  <action name="actiont2">
+  <action name="testBtn">
    <property name="text">
-    <string>t2</string>
+    <string>test</string>
    </property>
   </action>
  </widget>
@@ -95,7 +95,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>actiont1</sender>
+   <sender>pointCloudBtn</sender>
    <signal>triggered()</signal>
    <receiver>_openGLWidget</receiver>
    <slot>update()</slot>
@@ -107,6 +107,22 @@
     <hint type="destinationlabel">
      <x>400</x>
      <y>317</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>testBtn</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
     </hint>
    </hints>
   </connection>

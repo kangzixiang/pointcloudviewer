@@ -8,6 +8,8 @@
 
 #include "openGLWidget.h"
 
+
+using namespace std;
 namespace Ui {
 class MainWindow;
 }
@@ -24,4 +26,6 @@ public slots:  // NOLINT
 
 private:
     Ui::MainWindow* ui_;
+
+    vector<vector<double>> readPointCloud(string filePath);
 };
