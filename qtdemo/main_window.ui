@@ -14,26 +14,13 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>330</x>
-      <y>10</y>
-      <width>91</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Hello World</string>
-    </property>
-   </widget>
    <widget class="openGLWidget" name="_openGLWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>40</y>
+      <y>10</y>
       <width>781</width>
-      <height>511</height>
+      <height>561</height>
      </rect>
     </property>
     <property name="mouseTracking">
@@ -113,16 +100,16 @@
   <connection>
    <sender>testBtn</sender>
    <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
+   <receiver>_openGLWidget</receiver>
+   <slot>update()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
+     <x>400</x>
+     <y>317</y>
     </hint>
    </hints>
   </connection>

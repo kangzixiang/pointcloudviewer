@@ -22,6 +22,7 @@ public:
 
 public slots:  // NOLINT
     void ActionOpenPointCloud(void);
+    void ActionTest(void);
 
 
 private:

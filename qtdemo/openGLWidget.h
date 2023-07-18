@@ -3,12 +3,19 @@
 #include <QOpenGLFunctions>
 #include <QMouseEvent>
 
+#include <vector>
+
+using namespace std;
+
 class openGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
 public:
     openGLWidget(QWidget* parent = nullptr);
-    void updatePointCloudData(const std::vector<float> &data);
+    void updatePointCloudData(const vector<vector<double>> &data);
+
+    int m_nDraw;
+
 public slots:
     
     void setXRotation(int angle);
@@ -32,6 +39,8 @@ protected:
     void wheelEvent(QWheelEvent *event);
 private:
     void draw();
+    void drawTest();
+    void drawPointCloud();
     void qNormalizeAngle(int &angle);
 
     int xRot;
@@ -41,5 +50,5 @@ private:
 
     float fScale;
 
-    std::vector<float> pointCloudData;
+    vector<vector<double>> pointCloudData;
 };

@@ -9,10 +9,16 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui_(new Ui::MainW
 {
     ui_->setupUi(this);
     connect(ui_->pointCloudBtn, SIGNAL(triggered()), this, SLOT(ActionOpenPointCloud()));
+    connect(ui_->testBtn, SIGNAL(triggered()), this, SLOT(ActionTest()));
 }
 
 MainWindow::~MainWindow() {
     delete ui_;
+}
+
+void MainWindow::ActionTest(void)
+{
+    ui_->_openGLWidget->m_nDraw = 0;
 }
 
 vector<vector<double>> MainWindow::readPointCloud(string filePath)
@@ -165,4 +171,6 @@ void MainWindow::ActionOpenPointCloud(void) {
     std::string filePath;
     getline(ifs, filePath);
     vector<vector<double>> vec = readPointCloud(filePath);
+    ui_->_openGLWidget->m_nDraw = 1;
+    ui_->_openGLWidget->updatePointCloudData(vec);
 }

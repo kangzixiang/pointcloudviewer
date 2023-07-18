@@ -4,11 +4,12 @@
 openGLWidget::openGLWidget(QWidget *parent) : QOpenGLWidget(parent)
 {
     fScale = 1.0;
+    m_nDraw = 0;
 }
 
-void openGLWidget::updatePointCloudData(const std::vector<float> &data)
+void openGLWidget::updatePointCloudData(const vector<vector<double>> &data)
 {
-
+    pointCloudData = data;
 }
 
 void openGLWidget::setXRotation(int angle)
@@ -118,6 +119,18 @@ void openGLWidget::wheelEvent(QWheelEvent *event)
 
 void openGLWidget::draw()
 {
+    if (m_nDraw)
+    {
+        drawPointCloud();
+    }
+    else
+    {
+        drawTest();
+    }
+}
+
+void openGLWidget::drawTest()
+{
     glColor3f(1.0f, 0.0f, 0.0f);
     glBegin(GL_QUADS);
         glNormal3f(0,0,-1);
@@ -151,6 +164,21 @@ void openGLWidget::draw()
         glVertex3f(-1,-1,0);
         glVertex3f(0,0,1.2);
     glEnd();
+}
+
+void openGLWidget::drawPointCloud()
+{
+    glPointSize(1.0);
+    
+    for (int i = 0; i < pointCloudData.size(); i++)
+    {
+        glBegin(GL_POINTS);
+        std::vector<double> v = pointCloudData[i];
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex3f(v[0], v[1], v[2]);
+        glEnd();
+    }
+    
 }
 
 void openGLWidget::qNormalizeAngle(int &angle)
