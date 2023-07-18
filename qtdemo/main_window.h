@@ -6,6 +6,8 @@
 #include <memory>
 #include <string>
 
+#include "openGLWidget.h"
+
 namespace Ui {
 class MainWindow;
 }

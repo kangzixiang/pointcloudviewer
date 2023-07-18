@@ -1,3 +1,4 @@
+#pragma once
 #include <QtWidgets/QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QMouseEvent>

@@ -27,7 +27,7 @@
      <string>Hello World</string>
     </property>
    </widget>
-   <widget class="QOpenGLWidget" name="openGLWidget">
+   <widget class="openGLWidget" name="_openGLWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -85,17 +85,24 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>openGLWidget</class>
+   <extends>QOpenGLWidget</extends>
+   <header>openGLWdget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
    <sender>actiont1</sender>
    <signal>triggered()</signal>
-   <receiver>openGLWidget</receiver>
+   <receiver>_openGLWidget</receiver>
    <slot>update()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>85</x>
-     <y>70</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
      <x>400</x>

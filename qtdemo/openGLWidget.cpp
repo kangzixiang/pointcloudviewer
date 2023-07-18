@@ -106,11 +106,11 @@ void openGLWidget::wheelEvent(QWheelEvent *event)
     float numStep = (event->angleDelta().y() / 8) / 15;
     if (numStep > 0)
     {
-        fScale /= 0.1;
+        fScale /= 1.1;
     }
     else
     {
-        fScale *= 0.1;
+        fScale *= 1.1;
     }
     
     update();
