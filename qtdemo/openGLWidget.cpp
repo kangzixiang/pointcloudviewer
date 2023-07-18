@@ -5,11 +5,22 @@ openGLWidget::openGLWidget(QWidget *parent) : QOpenGLWidget(parent)
 {
     fScale = 1.0;
     m_nDraw = 0;
+    m_bLight = true;
 }
 
 void openGLWidget::updatePointCloudData(const vector<vector<double>> &data)
 {
     pointCloudData = data;
+}
+
+void openGLWidget::LightOn()
+{
+    m_bLight = true;
+}
+
+void openGLWidget::LightOff()
+{
+    m_bLight = false;
 }
 
 void openGLWidget::setXRotation(int angle)
@@ -39,8 +50,8 @@ void openGLWidget::setZRotation(int angle)
 void openGLWidget::initializeGL()
 {
     initializeOpenGLFunctions();
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glShadeModel(GL_SMOOTH);
@@ -75,6 +86,17 @@ void openGLWidget::paintGL()
     glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
     glScalef(fScale, fScale, fScale);
+    
+    if (m_bLight)
+    {
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+    }
+    else
+    {
+        glDisable(GL_LIGHT0);
+        glDisable(GL_LIGHTING);
+    }
     draw();
     
 }
@@ -138,26 +160,29 @@ void openGLWidget::drawTest()
         glVertex3f(-1,1,0);
         glVertex3f(1,1,0);
         glVertex3f(1,-1,0);
-
     glEnd();
+    glColor3f(0.0f, 1.0f, 0.0f);
     glBegin(GL_TRIANGLES);
         glNormal3f(0,-1,0.707);
         glVertex3f(-1,-1,0);
         glVertex3f(1,-1,0);
         glVertex3f(0,0,1.2);
     glEnd();
+    glColor3f(0.0f, 0.0f, 1.0f);
     glBegin(GL_TRIANGLES);
         glNormal3f(1,0, 0.707);
         glVertex3f(1,-1,0);
         glVertex3f(1,1,0);
         glVertex3f(0,0,1.2);
     glEnd();
+    glColor3f(0.0f, 1.0f, 1.0f);
     glBegin(GL_TRIANGLES);
         glNormal3f(0,1,0.707);
         glVertex3f(1,1,0);
         glVertex3f(-1,1,0);
         glVertex3f(0,0,1.2);
     glEnd();
+    glColor3f(1.0f, 0.0f, 1.0f);
     glBegin(GL_TRIANGLES);
         glNormal3f(-1,0,0.707);
         glVertex3f(-1,1,0);
@@ -166,10 +191,36 @@ void openGLWidget::drawTest()
     glEnd();
 }
 
+void openGLWidget::drawTriangle()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //清除屏幕和深度缓存
+    glLoadIdentity();                                   //重置当前的模型观察矩阵
+ 
+    glTranslatef(-1.5f, 0.0f, -6.0f);                   //左移1.5单位，并移入屏幕6.0单位
+    glBegin(GL_TRIANGLES);                              //开始绘制三角形
+        glColor3f(1.0f, 0.0f, 0.0f);                    //设置当前色为红色
+        glVertex3f(0.0f, 1.0f, 0.0f);                   //上顶点
+        glColor3f(0.0f, 1.0f, 0.0f);                    //设置当前色为绿色
+        glVertex3f(-1.0f, -1.0f, 0.0f);                 //左下
+        glColor3f(0.0f, 0.0f, 1.0f);                    //设置当前色为蓝色
+        glVertex3f(1.0f, -1.0f, 0.0f);                  //右下
+    glEnd();                                            //三角形绘制结束
+ 
+    glTranslatef(3.0f, 0.0f, 0.0f);                     //右移3.0单位
+    glColor3f(0.5f, 0.5f, 1.0f);                        //一次性将当前色设置为蓝色
+    glBegin(GL_QUADS);                                  //开始绘制四边形
+        glVertex3f(-1.0f, 1.0f, 0.0f);                  //左上
+        glVertex3f(1.0f, 1.0f, 0.0f);                   //右上
+        glVertex3f(1.0f, -1.0f, 0.0f);                  //左下
+        glVertex3f(-1.0f, -1.0f, 0.0f);                 //右下
+    glEnd();
+}
+
 void openGLWidget::drawPointCloud()
 {
     glPointSize(1.0);
-    
+    glClear(GL_COLOR_BUFFER_BIT);
+    glPushMatrix();
     for (int i = 0; i < pointCloudData.size(); i++)
     {
         glBegin(GL_POINTS);
@@ -178,7 +229,8 @@ void openGLWidget::drawPointCloud()
         glVertex3f(v[0], v[1], v[2]);
         glEnd();
     }
-    
+    glFlush();//保证前面的命令立即执行
+    glPopMatrix();
 }
 
 void openGLWidget::qNormalizeAngle(int &angle)

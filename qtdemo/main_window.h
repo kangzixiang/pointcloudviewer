@@ -24,6 +24,8 @@ public slots:  // NOLINT
     void ActionOpenPointCloud(void);
     void ActionTest(void);
 
+    void ActionLightOpen(void);
+    void ActionLightOff(void);
 
 private:
     Ui::MainWindow* ui_;

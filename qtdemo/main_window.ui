@@ -53,7 +53,15 @@
     <addaction name="pointCloudBtn"/>
     <addaction name="testBtn"/>
    </widget>
+   <widget class="QMenu" name="menuLight">
+    <property name="title">
+     <string>Light</string>
+    </property>
+    <addaction name="actionLightOpen"/>
+    <addaction name="actionLight_Off"/>
+   </widget>
    <addaction name="menuBtn"/>
+   <addaction name="menuLight"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionTest">
@@ -69,6 +77,16 @@
   <action name="testBtn">
    <property name="text">
     <string>test</string>
+   </property>
+  </action>
+  <action name="actionLightOpen">
+   <property name="text">
+    <string>Light Open</string>
+   </property>
+  </action>
+  <action name="actionLight_Off">
+   <property name="text">
+    <string>Light Off</string>
    </property>
   </action>
  </widget>
@@ -110,6 +128,38 @@
     <hint type="destinationlabel">
      <x>400</x>
      <y>317</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLightOpen</sender>
+   <signal>triggered()</signal>
+   <receiver>_openGLWidget</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>133</x>
+     <y>45</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>312</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLight_Off</sender>
+   <signal>triggered()</signal>
+   <receiver>_openGLWidget</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>312</y>
     </hint>
    </hints>
   </connection>

@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui_(new Ui::MainW
     ui_->setupUi(this);
     connect(ui_->pointCloudBtn, SIGNAL(triggered()), this, SLOT(ActionOpenPointCloud()));
     connect(ui_->testBtn, SIGNAL(triggered()), this, SLOT(ActionTest()));
+    connect(ui_->actionLightOpen, SIGNAL(triggered()), this, SLOT(ActionLightOpen()));
+    connect(ui_->actionLight_Off, SIGNAL(triggered()), this, SLOT(ActionLightOff()));
 }
 
 MainWindow::~MainWindow() {
@@ -19,6 +21,16 @@ MainWindow::~MainWindow() {
 void MainWindow::ActionTest(void)
 {
     ui_->_openGLWidget->m_nDraw = 0;
+}
+
+void MainWindow::ActionLightOpen(void)
+{
+    ui_->_openGLWidget->LightOn();
+}
+
+void MainWindow::ActionLightOff(void)
+{
+    ui_->_openGLWidget->LightOff();
 }
 
 vector<vector<double>> MainWindow::readPointCloud(string filePath)

@@ -16,6 +16,8 @@ public:
 
     int m_nDraw;
 
+    void LightOn();
+    void LightOff();
 public slots:
     
     void setXRotation(int angle);
@@ -40,6 +42,7 @@ protected:
 private:
     void draw();
     void drawTest();
+    void drawTriangle();
     void drawPointCloud();
     void qNormalizeAngle(int &angle);
 
@@ -49,6 +52,7 @@ private:
     QPoint lastPos;
 
     float fScale;
+    bool m_bLight;
 
     vector<vector<double>> pointCloudData;
 };
