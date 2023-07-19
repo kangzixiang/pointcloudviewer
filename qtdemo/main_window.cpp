@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui_(new Ui::MainW
     ui_->setupUi(this);
     connect(ui_->pointCloudBtn, SIGNAL(triggered()), this, SLOT(ActionOpenPointCloud()));
     connect(ui_->testBtn, SIGNAL(triggered()), this, SLOT(ActionTest()));
+    connect(ui_->actionloadLidarPoint, SIGNAL(triggered()), this, SLOT(ActionLoadLidarPointCloud()));
     connect(ui_->actionLightOpen, SIGNAL(triggered()), this, SLOT(ActionLightOpen()));
     connect(ui_->actionLight_Off, SIGNAL(triggered()), this, SLOT(ActionLightOff()));
 }
@@ -20,7 +21,12 @@ MainWindow::~MainWindow() {
 
 void MainWindow::ActionTest(void)
 {
-    ui_->_openGLWidget->m_nDraw = 0;
+    ui_->_openGLWidget->m_nDrawType = 0;
+}
+
+void MainWindow::ActionLoadLidarPointCloud(void)
+{
+    ui_->_openGLWidget->m_nDrawType =2;
 }
 
 void MainWindow::ActionLightOpen(void)
@@ -183,6 +189,6 @@ void MainWindow::ActionOpenPointCloud(void) {
     std::string filePath;
     getline(ifs, filePath);
     vector<vector<double>> vec = readPointCloud(filePath);
-    ui_->_openGLWidget->m_nDraw = 1;
+    ui_->_openGLWidget->m_nDrawType = 1;
     ui_->_openGLWidget->updatePointCloudData(vec);
 }

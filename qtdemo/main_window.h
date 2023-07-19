@@ -23,6 +23,7 @@ public:
 public slots:  // NOLINT
     void ActionOpenPointCloud(void);
     void ActionTest(void);
+    void ActionLoadLidarPointCloud(void);
 
     void ActionLightOpen(void);
     void ActionLightOff(void);

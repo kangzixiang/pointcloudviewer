@@ -14,7 +14,7 @@ public:
     openGLWidget(QWidget* parent = nullptr);
     void updatePointCloudData(const vector<vector<double>> &data);
 
-    int m_nDraw;
+    int m_nDrawType;
 
     void LightOn();
     void LightOff();

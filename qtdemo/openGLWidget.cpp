@@ -4,7 +4,7 @@
 openGLWidget::openGLWidget(QWidget *parent) : QOpenGLWidget(parent)
 {
     fScale = 1.0;
-    m_nDraw = 0;
+    m_nDrawType = 0;
     m_bLight = true;
 }
 
@@ -141,7 +141,7 @@ void openGLWidget::wheelEvent(QWheelEvent *event)
 
 void openGLWidget::draw()
 {
-    if (m_nDraw)
+    if (m_nDrawType)
     {
         drawPointCloud();
     }
@@ -221,7 +221,7 @@ void openGLWidget::drawPointCloud()
     glPointSize(1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     glPushMatrix();
-    for (int i = 0; i < pointCloudData.size(); i++)
+    for (std::size_t i = 0; i < pointCloudData.size(); i++)
     {
         glBegin(GL_POINTS);
         std::vector<double> v = pointCloudData[i];
