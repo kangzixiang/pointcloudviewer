@@ -9,10 +9,15 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+find_package(PCAP)
+message( "find pcap library: " ${PCAP_LIBRARY})
+link_libraries(${PCAP_LIBRARY})
+
 INCLUDE_DIRECTORIES(
     ${PROJECT_SOURCE_DIR}
 )
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} QT_DEMO_SOURCE)
+message(STATUS "QT_DEMO_SOURCE: " ${QT_DEMO_SOURCE})
 add_executable (qtdemo ${QT_DEMO_SOURCE})
 target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Core Qt5::Gui GL)

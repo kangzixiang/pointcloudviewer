@@ -13,6 +13,7 @@ class openGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 public:
     openGLWidget(QWidget* parent = nullptr);
     void updatePointCloudData(const vector<vector<double>> &data);
+    void updateLidarPointCloudData(const vector<vector<double>> &data);
 
     int m_nDrawType;
 
@@ -44,6 +45,7 @@ private:
     void drawTest();
     void drawTriangle();
     void drawPointCloud();
+    void drawLidarPointCloud();
     void qNormalizeAngle(int &angle);
 
     int xRot;
@@ -55,4 +57,5 @@ private:
     bool m_bLight;
 
     vector<vector<double>> pointCloudData;
+    vector<vector<double>> m_vecLidarPointCloudData;
 };

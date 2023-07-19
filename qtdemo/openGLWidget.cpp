@@ -13,6 +13,12 @@ void openGLWidget::updatePointCloudData(const vector<vector<double>> &data)
     pointCloudData = data;
 }
 
+void openGLWidget::updateLidarPointCloudData(const vector<vector<double>> &data)
+{
+    m_vecLidarPointCloudData = data;
+    update();
+}
+
 void openGLWidget::LightOn()
 {
     m_bLight = true;
@@ -141,13 +147,24 @@ void openGLWidget::wheelEvent(QWheelEvent *event)
 
 void openGLWidget::draw()
 {
-    if (m_nDrawType)
+    switch (m_nDrawType)
     {
-        drawPointCloud();
-    }
-    else
-    {
-        drawTest();
+        case 0:  //For model test
+        {
+            drawTest();
+            break;
+        }
+        case 1:  //for point cloud
+        {
+            drawPointCloud();
+            break;
+        }
+        case 2:
+        {
+            drawLidarPointCloud();
+            break;
+        }
+        default: break;
     }
 }
 
@@ -225,6 +242,23 @@ void openGLWidget::drawPointCloud()
     {
         glBegin(GL_POINTS);
         std::vector<double> v = pointCloudData[i];
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex3f(v[0], v[1], v[2]);
+        glEnd();
+    }
+    glFlush();//保证前面的命令立即执行
+    glPopMatrix();
+}
+
+void openGLWidget::drawLidarPointCloud()
+{
+    glPointSize(1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glPushMatrix();
+    for (std::size_t i = 0; i < m_vecLidarPointCloudData.size(); i++)
+    {
+        glBegin(GL_POINTS);
+        std::vector<double> v = m_vecLidarPointCloudData[i];
         glColor3f(1.0f, 0.0f, 0.0f);
         glVertex3f(v[0], v[1], v[2]);
         glEnd();

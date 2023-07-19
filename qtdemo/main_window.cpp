@@ -1,11 +1,42 @@
 #include <fstream>
 #include <sstream>
 #include <cstring>
+#include <vector>
 
 #include "main_window.h"
 #include "ui_main_window.h"
+#include "LidarGrabber.hpp"
 
-MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui_(new Ui::MainWindow)
+void lidarGrabber(std::string pcapFile, Ui::MainWindow* ui) {
+    CLidarGrabber lg(pcapFile);
+
+    std::vector<PointXYZI> vec;
+    std::function<void (const std::vector<PointXYZI> &)> cloud_cb =
+        [&vec](const std::vector<PointXYZI> &cloud) {vec = cloud;};
+    
+    lg.registerCallback(cloud_cb);
+
+    if (!lg.isRunning())
+    {
+        lg.start();
+        while (lg.isRunning())
+        {
+            if (!vec.empty())
+            {   vector<vector<double>> vecDta;
+                for (std::size_t i = 0; i < vec.size(); i++)
+                {
+                    vector<double> t{vec[i].x, vec[i].y, vec[i].z, vec[i].i};
+                    vecDta.push_back(t);
+                }
+                ui->_openGLWidget->updateLidarPointCloudData(vecDta);
+                vec.clear();
+            }
+        }
+        lg.stop();
+    }
+}
+
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui_(new Ui::MainWindow)
 {
     ui_->setupUi(this);
     connect(ui_->pointCloudBtn, SIGNAL(triggered()), this, SLOT(ActionOpenPointCloud()));
@@ -15,7 +46,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui_(new Ui::MainW
     connect(ui_->actionLight_Off, SIGNAL(triggered()), this, SLOT(ActionLightOff()));
 }
 
-MainWindow::~MainWindow() {
+MainWindow::~MainWindow()
+{
     delete ui_;
 }
 
@@ -26,7 +58,8 @@ void MainWindow::ActionTest(void)
 
 void MainWindow::ActionLoadLidarPointCloud(void)
 {
-    ui_->_openGLWidget->m_nDrawType =2;
+    ui_->_openGLWidget->m_nDrawType = 2;
+    std::thread *ThreadHandle = new std::thread(lidarGrabber, "/tmp/sensor/lidar/test.pcap", ui_);
 }
 
 void MainWindow::ActionLightOpen(void)
@@ -57,7 +90,8 @@ vector<vector<double>> MainWindow::readPointCloud(string filePath)
     string DATA;
     std::ifstream ifs(filePath);
     std::string line;
-    while (getline(ifs, line)) {
+    while (getline(ifs, line))
+    {
         if (line.find("PCD") != string::npos)
         {
             comment = line;
@@ -75,7 +109,8 @@ vector<vector<double>> MainWindow::readPointCloud(string filePath)
             std::string str;
             while (getline(ss, str, ' '))
             {
-                if (str == "FIELDS") continue;
+                if (str == "FIELDS")
+                    continue;
                 vecFields.push_back(str);
             }
             continue;
@@ -88,7 +123,8 @@ vector<vector<double>> MainWindow::readPointCloud(string filePath)
             while (getline(ss, str, ' '))
             {
                 int nSize = atoi(str.c_str());
-                if (0 == nSize) continue;
+                if (0 == nSize)
+                    continue;
                 vecSieze.push_back(nSize);
             }
             continue;
@@ -132,7 +168,7 @@ vector<vector<double>> MainWindow::readPointCloud(string filePath)
     }
     char c[4];
     float t = 0.0;
-    for (int i = 0; ; i++)
+    for (int i = 0;; i++)
     {
         int nIndex = i % vecFields.size();
         if (ifs.read(c, vecSieze[nIndex]))
@@ -163,13 +199,13 @@ vector<vector<double>> MainWindow::readPointCloud(string filePath)
                                 retVec.push_back(v);
                             }
                         }
-                        else 
+                        else
                         {
                             break;
                         }
                     }
                 }
-                else 
+                else
                 {
                     break;
                 }
@@ -184,7 +220,8 @@ vector<vector<double>> MainWindow::readPointCloud(string filePath)
     return retVec;
 }
 
-void MainWindow::ActionOpenPointCloud(void) {
+void MainWindow::ActionOpenPointCloud(void)
+{
     std::ifstream ifs("filePath.txt");
     std::string filePath;
     getline(ifs, filePath);
