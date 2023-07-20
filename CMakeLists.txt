@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.8)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 project(Point_Cloud_Viewer)
 
 function (add_subdirectory_if_exist arg)
