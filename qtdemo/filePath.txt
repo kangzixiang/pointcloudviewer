@@ -1,1 +1,2 @@
 ../resources/model.pcd
+/tmp/sensor/lidar/test.pcap

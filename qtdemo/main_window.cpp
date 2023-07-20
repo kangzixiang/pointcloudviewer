@@ -59,7 +59,17 @@ void MainWindow::ActionTest(void)
 void MainWindow::ActionLoadLidarPointCloud(void)
 {
     ui_->_openGLWidget->m_nDrawType = 2;
-    std::thread *ThreadHandle = new std::thread(lidarGrabber, "/tmp/sensor/lidar/test.pcap", ui_);
+    std::ifstream ifs("filePath.txt");
+    std::string filePath = "/tmp/sensor/lidar/test.pcap";
+    while (true)
+    {
+        getline(ifs, filePath);
+        if (filePath.find(".pcap") != string::npos)
+        {
+            break;
+        }
+    }
+    std::thread *ThreadHandle = new std::thread(lidarGrabber, filePath, ui_);
 }
 
 void MainWindow::ActionLightOpen(void)
