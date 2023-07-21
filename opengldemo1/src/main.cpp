@@ -18,9 +18,12 @@ using namespace std;
 
 static GLfloat xRot=0.0f;
 static GLfloat yRot=0.0f;
+static int lastX = 0;
+static int lastY = 0;
 static float fScale = 1.0 / 1.0f;
 
 void loadPointCloud();
+void qNormalizeAngle(int &angle);
 
 void displayPointCloud(void) {
     glClear(GL_COLOR_BUFFER_BIT);
@@ -115,6 +118,8 @@ void mouseWheel(int button, int dir, int x, int y) {
     {
         case 0:    //mouse left button
         {
+            lastX = x;
+            lastY = y;
             break;
         }
         case 3:
@@ -137,7 +142,20 @@ void mouseWheel(int button, int dir, int x, int y) {
 
 void mouseMove(int x, int y)
 {
-    return ;
+    int angle = 0;
+    int dx = x - lastX;
+    int dy = y - lastY;
+    angle = xRot + 8 * dy;
+    qNormalizeAngle(angle);
+    if (angle != xRot) {
+        xRot = angle;        
+    }
+    angle = yRot + 8 * dx;
+    qNormalizeAngle(angle);
+    if (angle != yRot) {
+        yRot = angle;
+    }
+    glutPostRedisplay();
 }
 
 int main(int argc, char **argv)
@@ -171,3 +189,10 @@ int main(int argc, char **argv)
     return 0;
 }
 
+void qNormalizeAngle(int &angle)
+{
+    while (angle < 0)
+        angle += 360 * 16;
+    while (angle > 360 * 16)
+        angle -= 360 * 16;
+}
