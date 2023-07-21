@@ -33,7 +33,7 @@ void displayPointCloud(void) {
     std::string filePath;
     getline(ifs, filePath);
     vector<vector<double>> vec = readPointCloud(filePath);
-    for (int i = 0; i < vec.size(); i++)
+    for (std::size_t i = 0; i < vec.size(); i++)
     {
         std::vector<double> v = vec[i];
         glColor3f(1.0f, 0.0f, 0.0f);
@@ -111,18 +111,33 @@ void reshape (int w, int h)
 }
 
 void mouseWheel(int button, int dir, int x, int y) {
-    if (dir > 0)
+    switch (button)
     {
-        // Zoom in
-        fScale *= 1.1;
-    }
-    else
-    {
-        // Zoom out
-        fScale /= 1.1;
+        case 0:    //mouse left button
+        {
+            break;
+        }
+        case 3:
+        {
+            // Zoom in
+            fScale *= 1.1;
+            break;
+        }
+        case 4:
+        {
+            // Zoom out
+            fScale /= 1.1;
+            break;
+        }
+        default: break;
     }
     glutPostRedisplay();
     return;
+}
+
+void mouseMove(int x, int y)
+{
+    return ;
 }
 
 int main(int argc, char **argv)
@@ -144,7 +159,8 @@ int main(int argc, char **argv)
 
     glutDisplayFunc(displayPointCloud);
     glutSpecialFunc(SpecialKeys);
-    glutMouseWheelFunc(mouseWheel);
+    glutMouseFunc(mouseWheel);
+    glutMotionFunc(mouseMove);
     glutIdleFunc(idle);
     //窗口调整大小事件的处理函数
     glutReshapeFunc(reshape);
