@@ -1,6 +1,6 @@
 # pointcloudviewer
 
-## introduction
+## Introduction
 This repo is use 3D graphics technique like opengl, osg, vtk for 3D point cloud viewer
 
 project contain some demo and study notes
@@ -52,7 +52,13 @@ This demo is a osg viewer to show point cloud.
 This demo use vtk to rendering a Cylinder model.
 
 ### opengldemo & opengldemo1 & openglstudy
-This folder contain opengl demo to show point.
+This folder contain opengl demo to show point and study demo.
+
+### qtopengltexture
+qt opengl texture demo
+
+![image](https://github.com/kangzixiang/pointcloudviewer/assets/27410104/ccdc3068-df19-42dc-9904-3816140c4699)
+
 
 ### resources
 This folder contain some point cloud file (.pcd) for some demo to load.
