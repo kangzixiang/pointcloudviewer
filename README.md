@@ -34,6 +34,8 @@ The QTdemo is a QT window to show point cloud
 
 The test .pcap file can download form: https://data.kitware.com/#collection/5b7f46f98d777f06857cb206/folder/5b7f47568d777f06857cb208
 
+![Alt text](img/qtdemo.png)
+
 ### pclrecognitiondemo
 This demo aims at explaining how to perform 3D Object 
 Recognition based on the pcl_recognition module.
@@ -48,8 +50,12 @@ This folder is a library to read point cloud from .pcd file.
 ### osgdemo
 This demo is a osg viewer to show point cloud.
 
+![Alt text](img/osgdemo.png)
+
 ### vtkdemo
 This demo use vtk to rendering a Cylinder model.
+
+![Alt text](img/vtkdemo.png)
 
 ### opengldemo & opengldemo1 & openglstudy
 This folder contain opengl demo to show point and study demo.
