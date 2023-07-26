@@ -1,3 +1,4 @@
+#version 330 core
 #ifdef GL_ES
 // Set default precision to medium
 precision mediump int;
@@ -18,8 +19,8 @@ void main()
 {
     // Calculate vertex position in screen space
     v_texcoord = a_texcoord;
-    // v_normal = mat3(transpose(inverse(modelMat))) * a_normal;
-    v_normal = a_normal;
+    // v_normal = a_normal;
+    v_normal = mat3(transpose(inverse(modelMat))) * a_normal;
     gl_Position = projectMat * viewMat * modelMat * vec4(a_position, 1.0f);
     v_fragPos = vec3(modelMat * vec4(a_position, 1.0f));
 }
