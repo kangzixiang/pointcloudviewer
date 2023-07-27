@@ -72,5 +72,10 @@ flashlight demo
 
 ![image](img/qtopengl_flashlight.png)
 
+### qtopengl_mulitlight
+mulitlight demo
+
+![image](img/qtopengl_mulitlight.png)
+
 ### resources
 This folder contain some point cloud file (.pcd) for some demo to load.
