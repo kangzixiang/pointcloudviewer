@@ -26,12 +26,12 @@ protected:
     void paintGL() override;
 
     void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
 private:
     void draw();
     void drawTest();
-    void drawTriangleTest();
 
     QOpenGLVertexArrayObject m_vao;
     QOpenGLBuffer m_vbo;
@@ -39,4 +39,18 @@ private:
     QOpenGLShaderProgram *m_program;
     int m_attr;
     int m_color;
+
+    bool mMousePress = false;
+
+    QMatrix4x4 mWordMat;
+    QMatrix4x4 mViewMat;
+    QMatrix4x4 mProjMat;
+
+    QMatrix4x4 mMVP;
+
+    QPoint lastPos;
+
+    QVector3D m_eye;
+    QVector3D m_eyeCenter;
+    QVector3D m_eyeUp;
 };
