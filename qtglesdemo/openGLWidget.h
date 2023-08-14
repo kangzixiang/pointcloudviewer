@@ -18,6 +18,7 @@ class openGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 public:
     openGLWidget(QWidget* parent = nullptr);
     virtual ~openGLWidget();
+    void updateLidarPointCloudData(const vector<vector<double>> &data);
 
 protected:
     
@@ -32,6 +33,10 @@ protected:
 private:
     void draw();
     void drawTest();
+    void drawLidarPointCloud();
+
+    vector<vector<double>> m_vecLidarPointCloudData;
+    std::mutex m_vecLidarPointCloudDataMutex;
 
     QOpenGLVertexArrayObject m_vao;
     QOpenGLBuffer m_vbo;
@@ -42,7 +47,7 @@ private:
 
     bool mMousePress = false;
 
-    QMatrix4x4 mWordMat;
+    QMatrix4x4 mModelMat;
     QMatrix4x4 mViewMat;
     QMatrix4x4 mProjMat;
 

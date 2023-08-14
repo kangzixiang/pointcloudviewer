@@ -4,25 +4,58 @@
 
 #include "openGLWidget.h"
 
-static GLfloat vertices[] = {0.0f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, //
-                                -1.0f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-                                0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-                                1.0f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, //
-                                0.0f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-                                0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f
+static GLfloat vertices[] = {-4.0f, -4.0f, 0.0f, 1.0f, 0.0f, 0.0f, //
+                                -4.0f, 4.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+                                4.0f, 4.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+                                4.0f, -4.0f, 0.0f, 1.0f, 0.0f, 0.0f, //
+                                0.0f, 0.0f, 4.0f, 0.0f, 1.0f, 0.0f,
+                                0.0f, 0.0f, -4.0f, 0.0f, 0.0f, 1.0f
     };
+
+static const char *vertexShaderSource = 
+            "#version 310 es\n"
+            "layout (location = 0) in vec3 aPos;\n"
+            "layout (location = 1) in vec3 aColor;\n"
+            "out vec3 inColor;\n"
+            "uniform mat4 MVP;\n"
+            "void main()\n"
+            "{\n"
+            "   inColor = aColor;\n"
+            "   gl_PointSize = 2.0;\n"
+            "   gl_Position = MVP * vec4(aPos, 1.0);\n"
+            "}\n";
+
+static const char *fragmentShaderSource =
+            "#version 310 es\n"
+            "#undef lowp\n"
+            "#undef mediump\n"
+            "#undef highp\n"
+            "precision mediump float;\n"
+            "in vec3 inColor;\n"
+            "out vec4 outColor;\n"
+            "void main()\n"
+            "{\n"
+                "outColor = vec4(inColor, 1.0);\n"
+            "}\n";
 
 openGLWidget::openGLWidget(QWidget *parent) : QOpenGLWidget(parent)
 {
-    mWordMat.setToIdentity();
+    mModelMat.setToIdentity();
     mViewMat.setToIdentity();
     mProjMat.setToIdentity();
-    mMVP = mProjMat * mViewMat * mWordMat;
+    mMVP = mProjMat * mViewMat * mModelMat;
 }
 
 openGLWidget::~openGLWidget() {
     m_vao.destroy();
     m_vbo.destroy();
+}
+
+void openGLWidget::updateLidarPointCloudData(const vector<vector<double>> &data) {
+    m_vecLidarPointCloudDataMutex.lock();
+    m_vecLidarPointCloudData = data;
+    m_vecLidarPointCloudDataMutex.unlock();
+    update();
 }
 
 void openGLWidget::initializeGL()
@@ -31,11 +64,11 @@ void openGLWidget::initializeGL()
 
     m_program = new QOpenGLShaderProgram();
     m_program->bind();
-    if (!m_program->addShaderFromSourceFile(QOpenGLShader::Vertex, "./vshader.glsl"))
+    if (!m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource))
     {
         qDebug() << (m_program->log());
     }
-    if (!m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, "./fshader.glsl"))
+    if (!m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource))
     {
         qDebug() << (m_program->log());
     }
@@ -58,20 +91,20 @@ void openGLWidget::initializeGL()
     glClear(GL_COLOR_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-    mWordMat.setToIdentity();
+    mModelMat.setToIdentity();
     mViewMat.setToIdentity();
     mProjMat.setToIdentity();
 
     m_eye.setX(0.0);
     m_eye.setY(0.0);
-    m_eye.setZ(2.0);
+    m_eye.setZ(50.0);
 
     m_eyeUp.setX(0.0);
     m_eyeUp.setY(1.0);
     m_eyeUp.setZ(0.0);
     mViewMat.lookAt(m_eye, m_eyeCenter, m_eyeUp);
 
-    mMVP = mProjMat * mViewMat * mWordMat;
+    mMVP = mProjMat * mViewMat * mModelMat;
 
 }
 
@@ -79,8 +112,8 @@ void openGLWidget::resizeGL(int w, int h)
 {
     glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 
-    mProjMat.ortho(-2, +2, -2, +2, 1.0, 15.0);
-    mMVP = mProjMat * mViewMat * mWordMat;
+    mProjMat.perspective(45.0, (float)w / h, 0.1, 100);
+    mMVP = mProjMat * mViewMat * mModelMat;
 
 }
 
@@ -108,11 +141,11 @@ void openGLWidget::mouseMoveEvent(QMouseEvent *event)
     int dx = event->x() - lastPos.x();
     int dy = event->y() - lastPos.y();
     if (event->buttons() & Qt::LeftButton) {
-        mWordMat.rotate(1 + 8 * dy, 1 + 8 * dx, 1);
+        mModelMat.rotate(1 + 8 * dy, 1 + 8 * dx, 1);
     } else if (event->buttons() & Qt::RightButton) {
-        mWordMat.rotate(1 + 8 * dy, 1, 1  + 8 * dx);
+        mModelMat.rotate(1 + 8 * dy, 1, 1  + 8 * dx);
     }
-    mMVP = mProjMat * mViewMat * mWordMat;
+    mMVP = mProjMat * mViewMat * mModelMat;
     lastPos = event->pos();
     update();
 }
@@ -122,22 +155,39 @@ void openGLWidget::wheelEvent(QWheelEvent *event)
     QOpenGLWidget::wheelEvent(event);
     float numStep = (event->angleDelta().y() / 8) / 15;
     static float fScale = 1.0;
+    static float z = 4.0;
     if (numStep > 0)
     {
-        fScale /= 1.1;
+        z++;
+        m_eye.setX(0.0);
+        m_eye.setY(0.0);
+        m_eye.setZ(z);
+
+        m_eyeUp.setX(0.0);
+        m_eyeUp.setY(1.0);
+        m_eyeUp.setZ(0.0);
+        mViewMat.lookAt(m_eye, m_eyeCenter, m_eyeUp);
     }
     else
     {
-        fScale *= 1.1;
+        z--;
+        m_eye.setX(0.0);
+        m_eye.setY(0.0);
+        m_eye.setZ(z);
+
+        m_eyeUp.setX(0.0);
+        m_eyeUp.setY(1.0);
+        m_eyeUp.setZ(0.0);
+        mViewMat.lookAt(m_eye, m_eyeCenter, m_eyeUp);
     }
-    mWordMat.scale(fScale, fScale, fScale);
-    mMVP = mProjMat * mViewMat * mWordMat;
+    // mModelMat.scale(fScale, fScale, fScale);
+    mMVP = mProjMat * mViewMat * mModelMat;
     update();
 }
 
 void openGLWidget::draw()
 {
-    drawTest();
+    drawLidarPointCloud();
 }
 
 void openGLWidget::drawTest() {
@@ -157,6 +207,44 @@ void openGLWidget::drawTest() {
     m_program->setUniformValue("MVP", mMVP);
 
     glDrawArrays(GL_POINTS, 0, 6);
+    m_vbo.release();
+    m_vao.release();
+    m_program->release();
+}
+static vector<float> vecData;
+
+void openGLWidget::drawLidarPointCloud() {
+    vecData.clear();
+    m_vecLidarPointCloudDataMutex.lock();
+    for (std::size_t i = 0; i < m_vecLidarPointCloudData.size(); i++)
+    {
+        vecData.push_back(m_vecLidarPointCloudData[i].at(0));
+        vecData.push_back(m_vecLidarPointCloudData[i].at(1));
+        vecData.push_back(m_vecLidarPointCloudData[i].at(2));
+        // printf("x = %f, y = %f, z = %f\n", m_vecLidarPointCloudData[i].at(0), m_vecLidarPointCloudData[i].at(1), m_vecLidarPointCloudData[i].at(2));
+        vecData.push_back(1.0);
+        vecData.push_back(0.0);
+        vecData.push_back(0.0);
+    }
+    m_vecLidarPointCloudDataMutex.unlock();
+
+
+    m_program->bind();
+    m_vao.bind();
+    m_vbo.bind();
+    m_vbo.allocate(vecData.data(), vecData.size() * sizeof(float));
+
+    m_attr = m_program->attributeLocation("aPos");
+    m_program->setAttributeBuffer(m_attr, GL_FLOAT, 0, 3, 6 * sizeof(GL_FLOAT));
+    m_program->enableAttributeArray(m_attr);
+
+    m_color = m_program->attributeLocation("aColor");
+    m_program->setAttributeBuffer(m_color, GL_FLOAT, 3 * sizeof(GL_FLOAT), 3, 6 * sizeof(GL_FLOAT));
+    m_program->enableAttributeArray(m_color);
+
+    m_program->setUniformValue("MVP", mMVP);
+
+    glDrawArrays(GL_POINTS, 0, m_vecLidarPointCloudData.size());
     m_vbo.release();
     m_vao.release();
     m_program->release();

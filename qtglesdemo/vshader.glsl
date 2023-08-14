@@ -8,6 +8,6 @@ uniform mat4 MVP;
 void main()
 {
     inColor = aColor;
-    gl_PointSize = 3.0;
+    gl_PointSize = 2.0;
     gl_Position = MVP * vec4(aPos, 1.0);
 }
