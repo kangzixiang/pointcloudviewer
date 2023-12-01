@@ -5,7 +5,7 @@ This repo is use 3D graphics technique like opengl, osg, vtk for 3D point cloud 
 
 project contain some demo and study notes
 
-Wellcome to star and fork to contribute
+Wellcome to star/fork and contribute
 
 ## How to build 
 ```
