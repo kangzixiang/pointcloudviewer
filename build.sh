@@ -18,7 +18,7 @@ parseArguments()
 			rm -rf CMakeCache.txt  CMakeFiles/
 			;;
 		--clean-all)
-			rm -rf CMakeCache.txt  CMakeFiles/ ../bin/
+			rm -rf *
 			;;
 		-h|--help)
 			echo -e "\033[32m==================================\033[0m"
