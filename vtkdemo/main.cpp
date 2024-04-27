@@ -11,8 +11,7 @@
 
 #include <array>
 
-int main(int, char*[])
-{
+int main(int, char *[]) {
   vtkNew<vtkNamedColors> colors;
 
   // Set the background color.

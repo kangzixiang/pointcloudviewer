@@ -20,6 +20,9 @@ parseArguments()
 		--clean-all)
 			rm -rf *
 			;;
+		--format)
+			find . -name '*.cpp' -o -name '*.h' | xargs clang-format -i
+			;;
 		-h|--help)
 			echo -e "\033[32m==================================\033[0m"
 			echo "Usage"

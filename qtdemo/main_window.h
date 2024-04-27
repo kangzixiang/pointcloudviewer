@@ -8,28 +8,27 @@
 
 #include "openGLWidget.h"
 
-
 using namespace std;
 namespace Ui {
 class MainWindow;
 }
 
 class MainWindow : public QMainWindow {
-    Q_OBJECT
+  Q_OBJECT
 public:
-    explicit MainWindow(QWidget* parent = nullptr);
-    virtual ~MainWindow();
+  explicit MainWindow(QWidget *parent = nullptr);
+  virtual ~MainWindow();
 
-public slots:  // NOLINT
-    void ActionOpenPointCloud(void);
-    void ActionTest(void);
-    void ActionLoadLidarPointCloud(void);
+public slots: // NOLINT
+  void ActionOpenPointCloud(void);
+  void ActionTest(void);
+  void ActionLoadLidarPointCloud(void);
 
-    void ActionLightOpen(void);
-    void ActionLightOff(void);
+  void ActionLightOpen(void);
+  void ActionLightOff(void);
 
 private:
-    Ui::MainWindow* ui_;
+  Ui::MainWindow *ui_;
 
-    vector<vector<double>> readPointCloud(string filePath);
+  vector<vector<double>> readPointCloud(string filePath);
 };
