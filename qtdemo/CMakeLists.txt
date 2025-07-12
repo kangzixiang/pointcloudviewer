@@ -9,7 +9,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(PCAP)
+find_library(PCAP_LIBRARY pcap)
 link_libraries(${PCAP_LIBRARY})
 
 INCLUDE_DIRECTORIES(
